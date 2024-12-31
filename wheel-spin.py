@@ -1,20 +1,42 @@
 import random
 
-# initialize wheel 
-
+# initialize wheel
 def wheel():
-    inputnames = input("Enter wheel inputs separated by semi-commas: ")
-    inputlist = inputnames.split(';')
+    inputnames = input("Enter wheel inputs separated by semi-colons: ").strip()
+
+    if not inputnames:
+        print("No names entered. Exiting.")
+        return
+    
+    inputlist = [name.strip() for name in inputnames.split(';') if name.strip()]
+
+    if not inputlist:
+        print("No valid names entered. Exiting.")
+        return
 
     while inputlist:
-        print("Spinning the wheel...\n")
+        print("\nSpinning the wheel...\n")
         winner = random.choice(inputlist)
-        print("The winner is:", winner)
-        inputlist.remove(winner)
-    
-    # play again feature with winner removed
-        play_again = input("Do you want to spin the wheel again? (y/n): ")
-        if play_again.lower() != "y":
+
+        print(f"🎉 The winner is: {winner}! 🎉")
+
+        # Ask if the winner should be removed
+        remove_winner = input(f"Do you want to remove {winner} from the list? (y/n): ").strip().lower()
+        if remove_winner == "y":
+            inputlist.remove(winner)
+            print(f"{winner} has been removed from the list.")
+
+        if not inputlist:
+            print("All names have been selected or removed. Exiting.")
+            break
+        
+        print("\nRemaining participants:")
+        for name in inputlist:
+            print(f"- {name}")
+
+        # Play again feature
+        play_again = input("\nDo you want to spin the wheel again? (y/n): ").strip().lower()
+        if play_again != "y":
             print("Exiting wheel spinner.")
             break
 
